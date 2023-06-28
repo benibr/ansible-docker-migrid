@@ -26,8 +26,9 @@
 
 - name: Clone docker-migrid
   git:
-    repo: "{{migrid_repository}}"
-    dest: "{{migrid_root}}"
+    repo: "{{ migrid_docker_repository }}"
+    dest: "{{ migrid_root }}"
+    version: "{{ migrid_docker_repository_version | default('master') }}"
 
 - name: Change owner on all files
   file:
@@ -41,6 +42,7 @@
     src: "{{migrid_auoverlay}}/{{ansible_hostname}}/env"
     dest: "{{migrid_root}}/.env"
     state: link
+    force: no
 
 - name: Set Dockerfile
   file:
