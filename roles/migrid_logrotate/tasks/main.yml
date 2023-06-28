@@ -1,10 +1,17 @@
 ---
 
-- name: "Install needed packages"
+- name: Install needed packages (Debian)
   apt:
     name: "logrotate"
     state: "present"
     update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install needed packages (RedHat)
+  yum:
+    name: "logrotate"
+    state: "present"
+  when: ansible_os_family == "RedHat"
 
 - name: Copy migrid logrotate file
   template:
@@ -23,3 +30,13 @@
     name: logrotate
     enabled: yes
     state: started
+  when: ansible_os_family == "Debian"
+
+- name: Enable logrotate
+  cron:
+    name: mirgid-logrotate
+    user: root
+    minute: "10"
+    hour: "4"
+    job: "logrotate -f /etc/logrotate.conf"
+  when: ansible_os_family == "RedHat"
