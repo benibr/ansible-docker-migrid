@@ -17,19 +17,19 @@
 - name: Get infos on container
   community.docker.docker_container_info:
     name: migrid
-  register: result
+  register: migrid_container
 
-- name: Check if containers are running
+- name: Check if migrid container exists
   fail:
-    msg: "MiGrid is runing, cannot continue!"
-  when: result.exists
+    msg: "MiGrid container already exists, cannot continue!"
+  when: migrid_container.exists
 
 - name: Clone docker-migrid
   git:
     repo: "{{migrid_repository}}"
     dest: "{{migrid_root}}"
 
-- name: Changer owner on all files
+- name: Change owner on all files
   file:
     path: "{{migrid_root}}"
     owner: "{{migrid_adm}}"
