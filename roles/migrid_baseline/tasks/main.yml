@@ -46,7 +46,7 @@
 
 - name: Set Dockerfile
   file:
-    src: "{{ migrid_root }}/Dockerfile.{{ migrid_container_type }}"
+    src: "./Dockerfile.{{ migrid_container_type }}"
     dest: "{{ migrid_root }}/Dockerfile"
     state: link
 
